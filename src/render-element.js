@@ -11,7 +11,11 @@ export const e = (tagName, attributes, children) => {
     if (attributes) {
         Object.keys(attributes).forEach(attributeName => {
             const attributeValue = attributes[attributeName]
-            element.setAttribute(attributeName, attributeValue)
+            if (["onchange", "onblur", "onclick"].includes(attributeName)) {
+                element[attributeName] = attributeValue
+            } else {
+                element.setAttribute(attributeName, attributeValue)
+            }
         })
     }
     if (children) {
