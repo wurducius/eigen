@@ -20,6 +20,7 @@ const addTd = () => {
         if (title) {
             inputElement.value = ""
             getStore().td.actions.add(title)
+            inputElement.focus()
         } else {
             alert("Todo title is empty.")
         }
@@ -27,13 +28,18 @@ const addTd = () => {
 }
 
 define(Component.input, (t) => {
-            const inputElement = input({id: Element.TdTitle, value: "", placeholder: "Title"})
+            const inputElement = input({
+                id: Element.TdTitle, value: "", placeholder: "To do item title", onkeydown: (event) => {
+                    if (event.key === "Enter") {
+                        addTd()
+                    }
+                }
+            })
             t.appendChild(inputElement)
 
             const btn = button({onclick: addTd}, "Add")
             t.appendChild(btn)
-        },
-        true
+        }
 )
 
 define(Component.c, (t) => {

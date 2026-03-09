@@ -2,7 +2,7 @@ const renderAttributes = (element, attributes) => {
     if (attributes) {
         Object.keys(attributes).forEach(attributeName => {
             const attributeValue = attributes[attributeName]
-            if (["onchange", "onblur", "onclick"].includes(attributeName)) {
+            if (["onchange", "onblur", "onclick", "onkeydown", "onkeyup"].includes(attributeName)) {
                 element[attributeName] = attributeValue
             } else {
                 element.setAttribute(attributeName, attributeValue)
