@@ -1,8 +1,12 @@
+import { EIGEN_RENDER_TEXT_CONTENT_SEPARATOR } from "../constants"
+
+const HTML_PROPERTY_HANDLERS = ["onchange", "onblur", "onclick", "onkeydown", "onkeyup"]
+
 const renderAttributes = (element, attributes) => {
   if (attributes) {
     Object.keys(attributes).forEach((attributeName) => {
       const attributeValue = attributes[attributeName]
-      if (["onchange", "onblur", "onclick", "onkeydown", "onkeyup"].includes(attributeName)) {
+      if (HTML_PROPERTY_HANDLERS.includes(attributeName)) {
         element[attributeName] = attributeValue
       } else {
         element.setAttribute(attributeName, attributeValue)
@@ -15,7 +19,7 @@ const renderChild = (element) => (children) => {
   if (children) {
     if (typeof children === "string") {
       if (element.innerHTML) {
-        element.innerHTML = element.innerHTML + ", " + children
+        element.innerHTML = element.innerHTML + EIGEN_RENDER_TEXT_CONTENT_SEPARATOR + children
       } else {
         element.innerHTML = children
       }

@@ -1,1 +1,3 @@
 export const EIGEN_CUSTOM_COMPONENT_PREFIX = "efl-"
+
+export const EIGEN_RENDER_TEXT_CONTENT_SEPARATOR = ", "
