@@ -1,7 +1,7 @@
-import { getStore } from "./store"
+import { getStore, TdView, Top } from "./store"
 import { define } from "../src/component/define-component"
 import { button, div, input } from "../src/simple/simple"
-import { handleElement } from "../src/util/dom"
+import { addTd, getBtnClassByView, getTdItemsByView, getTitleByView } from "./logic"
 
 const Component = {
   c: "c",
@@ -12,49 +12,19 @@ const Element = {
   TdTitle: "td-add-input",
 }
 
-const addTd = () => {
-  handleElement(Element.TdTitle, (inputElement) => {
-    const title = inputElement.value
-    if (title) {
-      inputElement.value = ""
-      getStore().td.actions.add(title)
-      inputElement.focus()
-    } else {
-      alert("Todo title is empty.")
-    }
-  })
-}
-
-const getTitleByView = (view) => {
-  if (view === "all") {
-    return "All"
-  } else if (view === "ready") {
-    return "Ready"
-  } else {
-    return "Completed"
-  }
-}
-
-const getBtnClassByView = (view, current) => {
-  if (view === current) {
-    return "btn-view-current"
-  } else {
-    return undefined
-  }
-}
-
 define(
   Component.input,
   (t) => {
+    const onPressEnter = (event) => {
+      if (event.key === "Enter") {
+        addTd()
+      }
+    }
     const inputElement = input({
       id: Element.TdTitle,
       value: "",
       placeholder: "To do item title",
-      onkeydown: (event) => {
-        if (event.key === "Enter") {
-          addTd()
-        }
-      },
+      onkeydown: onPressEnter,
     })
     t.appendChild(inputElement)
 
@@ -64,20 +34,20 @@ define(
     const view = getStore().td.data.view
 
     const btnViewReady = button(
-      { onclick: () => getStore().td.actions.setView("ready"), class: getBtnClassByView(view, "ready") },
+      { onclick: () => getStore().td.actions.setView(TdView.READY), class: getBtnClassByView(view, TdView.READY) },
       "Ready",
     )
     t.appendChild(btnViewReady)
     const btnViewCompleted = button(
       {
-        onclick: () => getStore().td.actions.setView("completed"),
-        class: getBtnClassByView(view, "completed"),
+        onclick: () => getStore().td.actions.setView(TdView.COMPLETED),
+        class: getBtnClassByView(view, TdView.COMPLETED),
       },
       "Completed",
     )
     t.appendChild(btnViewCompleted)
     const btnViewAll = button(
-      { onclick: () => getStore().td.actions.setView("all"), class: getBtnClassByView(view, "all") },
+      { onclick: () => getStore().td.actions.setView(TdView.ALL), class: getBtnClassByView(view, TdView.ALL) },
       "All",
     )
     t.appendChild(btnViewAll)
@@ -85,30 +55,20 @@ define(
     const viewTitle = div(undefined, getTitleByView(getStore().td.data.view))
     t.appendChild(viewTitle)
   },
-  "header",
+  Top.HEADER,
 )
-
-const getTdItemsByView = (items, view) => {
-  if (view === "all") {
-    return items
-  } else if (view === "ready") {
-    return items.filter((item) => item.status === "ready")
-  } else {
-    return items.filter((item) => item.status === "completed")
-  }
-}
 
 define(
   Component.c,
   (t) => {
     const view = getStore().td.data.view
     getTdItemsByView(getStore().td.data.items, view).forEach((item) => {
-      const isCompleted = item.status === "completed"
+      const isCompleted = item.status === TdView.COMPLETED
 
       const itemParent = div({ id: item.id, class: "td-item-parent" })
       t.appendChild(itemParent)
 
-      const itemTitle = isCompleted && view !== "completed" ? item.title + " (completed)" : item.title
+      const itemTitle = isCompleted && view !== TdView.COMPLETED ? item.title + " (completed)" : item.title
       const titleElement = div(undefined, itemTitle)
       itemParent.appendChild(titleElement)
 
@@ -119,5 +79,5 @@ define(
       itemParent.appendChild(btn)
     })
   },
-  "list",
+  Top.LIST,
 )
