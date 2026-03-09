@@ -1,5 +1,5 @@
-import {getStore} from "../project/store";
-import {Eigen} from "./eigen";
+import {getStore} from "../../project/store";
+import {Eigen} from "../core/eigen";
 
 export const getCustomComponentClass = (renderFm, props) => {
     return class Custom extends HTMLDivElement {
@@ -16,7 +16,7 @@ export const getCustomComponentClass = (renderFm, props) => {
             this.props = props
 
             if (this.top) {
-                Eigen.add(this)
+                Eigen.add(this.top, this)
             }
         }
 
