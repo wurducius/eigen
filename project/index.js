@@ -1,19 +1,11 @@
-import { getStore, TdView, Top } from "./store"
+import { getStore } from "./store"
 import { define } from "../src/component/define-component"
 import { button, div, input } from "../src/simple/simple"
 import { addTd, getBtnClassByView, getTdItemsByView, getTitleByView } from "./logic"
-
-const Component = {
-  c: "c",
-  input: "input",
-}
-
-const Element = {
-  TdTitle: "td-add-input",
-}
+import { Component, Id, TdView, Top } from "./constants"
 
 define(
-  Component.input,
+  Component.tdHeader,
   (t) => {
     const onPressEnter = (event) => {
       if (event.key === "Enter") {
@@ -21,14 +13,19 @@ define(
       }
     }
     const inputElement = input({
-      id: Element.TdTitle,
+      id: Id.TdTitle,
       value: "",
       placeholder: "To do item title",
       onkeydown: onPressEnter,
     })
     t.appendChild(inputElement)
 
-    const btn = button({ onclick: addTd }, "Add")
+    const btn = button(
+      {
+        onclick: addTd,
+      },
+      "Add",
+    )
     t.appendChild(btn)
 
     const view = getStore().td.data.view
@@ -59,7 +56,7 @@ define(
 )
 
 define(
-  Component.c,
+  Component.tdList,
   (t) => {
     const view = getStore().td.data.view
     getTdItemsByView(getStore().td.data.items, view).forEach((item) => {

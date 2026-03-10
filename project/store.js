@@ -1,16 +1,6 @@
 import { Eigen } from "../src/core/eigen"
 import { generateId } from "../src/util/math"
-
-export const Top = {
-  HEADER: "header",
-  LIST: "list",
-}
-
-export const TdView = {
-  READY: "ready",
-  COMPLETED: "completed",
-  ALL: "all",
-}
+import { TdView, Top } from "./constants"
 
 const createItem = (title) => ({
   id: generateId(),
@@ -35,7 +25,7 @@ const store = {
       complete: (id) => {
         const item = store.td.data.items.find((i) => i.id === id)
         if (item) {
-          const nextStatus = item.status === TdView.COMPLETED ? TdView.READY : TdView.COMPLETEDe
+          const nextStatus = item.status === TdView.COMPLETED ? TdView.READY : TdView.COMPLETED
           getStore().td.data.items = getStore().td.data.items.map((i) =>
             i.id === item.id ? { ...i, status: nextStatus } : i,
           )

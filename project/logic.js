@@ -1,8 +1,9 @@
-import { getStore, TdView } from "./store"
+import { getStore } from "./store"
 import { handleElement } from "../src/util/dom"
+import { Id, TdView } from "./constants"
 
 export const addTd = () => {
-  handleElement(Element.TdTitle, (inputElement) => {
+  handleElement(Id.TdTitle, (inputElement) => {
     const title = inputElement.value
     if (title) {
       inputElement.value = ""
