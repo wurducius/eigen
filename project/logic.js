@@ -15,16 +15,6 @@ export const addTd = () => {
   })
 }
 
-export const getTitleByView = (view) => {
-  if (view === TdView.ALL) {
-    return "All"
-  } else if (view === TdView.READY) {
-    return "Ready"
-  } else {
-    return "Completed"
-  }
-}
-
 export const getBtnClassByView = (view, current) => {
   if (view === current) {
     return "btn-view-current"
